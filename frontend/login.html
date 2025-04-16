@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Connexion - SkillSwap</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen px-4">
+  <div class="w-full max-w-md bg-white p-6 rounded-2xl shadow-lg">
+    <h2 class="text-2xl font-bold mb-4 text-center text-green-600">Connexion</h2>
+    <form id="loginForm" class="space-y-4">
+      <input type="email" name="email" placeholder="Email" required class="w-full p-3 border rounded-xl">
+      <input type="password" name="password" placeholder="Mot de passe" required class="w-full p-3 border rounded-xl">
+      <button type="submit" class="w-full py-3 bg-green-500 text-white font-semibold rounded-xl hover:bg-green-600">Se connecter</button>
+    </form>
+    <p class="mt-4 text-center text-sm text-gray-600">Pas encore de compte ? <a href="register.html" class="text-green-500 hover:underline">S'inscrire</a></p>
+  </div>
+
+  <script>
+    document.querySelector('#loginForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const res = await fetch('http://localhost:8000/api.php?route=auth&action=login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: form.email.value, password: form.password.value })
+      });
+      const data = await res.json();
+      if (data.success) {
+        localStorage.setItem('user', JSON.stringify(data.user));
+        alert('Connecté !');
+        window.location.href = 'index.html';
+      } else {
+        alert('Email ou mot de passe incorrect');
+      }
+    });
+  </script>
+</body>
+</html>

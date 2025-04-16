@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Publier une offre - SkillSwap</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen px-4">
+  <div class="w-full max-w-xl bg-white p-6 rounded-2xl shadow-lg">
+    <h2 class="text-2xl font-bold mb-6 text-center text-yellow-600">Publier une offre</h2>
+    <form id="offerForm" class="space-y-4">
+      <input type="text" name="title" placeholder="Titre de l'offre" required class="w-full p-3 border rounded-xl">
+      <textarea name="description" placeholder="Description" required class="w-full p-3 border rounded-xl"></textarea>
+      <button type="submit" class="w-full py-3 bg-yellow-500 text-white font-semibold rounded-xl hover:bg-yellow-600">Publier</button>
+    </form>
+    <p class="mt-4 text-center text-sm text-gray-600"><a href="index.html" class="text-yellow-500 hover:underline">⬅ Retour à l'accueil</a></p>
+  </div>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user) {
+      alert("Vous devez être connecté !");
+      window.location.href = "login.html";
+    }
+
+    document.querySelector('#offerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const res = await fetch('http://localhost:8000/api.php?route=offers', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: form.title.value,
+          description: form.description.value,
+          user_id: user.id
+        })
+      });
+      const data = await res.json();
+      alert(data.success ? "Offre publiée !" : "Erreur lors de la publication");
+      if (data.success) window.location.href = 'dashboard.html';
+    });
+  </script>
+</body>
+</html>

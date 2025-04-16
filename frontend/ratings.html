@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Notation - SkillSwap</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen px-4 py-10">
+  <div class="max-w-3xl mx-auto">
+    <h1 class="text-3xl font-bold text-amber-600 text-center mb-8">⭐ Donner une note</h1>
+
+    <form id="ratingForm" class="bg-white p-6 rounded-2xl shadow space-y-4">
+      <input type="number" name="user_id" placeholder="ID utilisateur noté" required class="w-full p-3 border rounded-xl">
+      <input type="number" name="rating" min="1" max="5" placeholder="Note (1-5)" required class="w-full p-3 border rounded-xl">
+      <textarea name="comment" placeholder="Commentaire (optionnel)" class="w-full p-3 border rounded-xl"></textarea>
+      <button type="submit" class="w-full py-3 bg-amber-500 text-white font-semibold rounded-xl hover:bg-amber-600">Envoyer</button>
+    </form>
+
+    <div class="text-center mt-10">
+      <a href="index.html" class="inline-block bg-amber-500 text-white px-6 py-3 rounded-xl shadow hover:bg-amber-600 transition">⬅ Retour à l'accueil</a>
+    </div>
+  </div>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user) {
+      alert("Vous devez être connecté !");
+      window.location.href = "login.html";
+    }
+
+    document.querySelector('#ratingForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const res = await fetch('http://localhost:8000/api.php?route=ratings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          user_id: form.user_id.value,
+          rating: form.rating.value,
+          comment: form.comment.value
+        })
+      });
+      const data = await res.json();
+      alert(data.success ? 'Note envoyée !' : 'Erreur lors de l\'envoi');
+      if (data.success) form.reset();
+    });
+  </script>
+</body>
+</html>

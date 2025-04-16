@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Modération - SkillSwap</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen px-4 py-10">
+  <div class="max-w-5xl mx-auto">
+    <h1 class="text-3xl font-bold text-red-600 text-center mb-8">🛠 Modération des Offres</h1>
+    <div id="adminOffers" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    <div class="text-center mt-10">
+      <a href="index.html" class="inline-block bg-red-500 text-white px-6 py-3 rounded-xl shadow hover:bg-red-600 transition">⬅ Retour à l'accueil</a>
+    </div>
+  </div>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user) {
+      alert("Vous devez être connecté !");
+      window.location.href = "login.html";
+    }
+
+    async function loadAdminOffers() {
+      const res = await fetch('http://localhost:8000/api.php?route=offers');
+      const offers = await res.json();
+      const container = document.getElementById('adminOffers');
+      if (!offers.length) {
+        container.innerHTML = '<p class="text-gray-500 col-span-full">Aucune offre trouvée.</p>';
+        return;
+      }
+      container.innerHTML = offers.map(o => `
+        <div class="bg-white p-5 rounded-2xl shadow-md border">
+          <h4 class="text-lg font-semibold text-red-600 mb-2">${o.title}</h4>
+          <p class="text-gray-700 text-sm mb-2">${o.description}</p>
+          <p class="text-xs text-gray-500 mb-3">Par : ${o.email}</p>
+          <button onclick="deleteOffer(${o.id})" class="bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600">Supprimer</button>
+        </div>
+      `).join('');
+    }
+
+    async function deleteOffer(id) {
+      const res = await fetch(`http://localhost:8000/api.php?route=offers`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `id=${id}`
+      });
+      const data = await res.json();
+      if (data.success) loadAdminOffers();
+      else alert("Erreur lors de la suppression.");
+    }
+
+    loadAdminOffers();
+  </script>
+</body>
+</html>

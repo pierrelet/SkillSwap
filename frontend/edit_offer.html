@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head><title>Modifier une offre</title></head>
+<body>
+  <form id="editForm">
+    <input type="hidden" name="id">
+    <input type="text" name="title" placeholder="Titre" required>
+    <textarea name="description" placeholder="Description" required></textarea>
+    <input type="number" name="user_id" placeholder="ID utilisateur" required>
+    <button type="submit">Mettre à jour</button>
+  </form>
+  <script>
+    const params = new URLSearchParams(location.search);
+    fetch(`../../backend/api.php?route=offers`)
+      .then(res => res.json())
+      .then(offers => {
+        const offer = offers.find(o => o.id === parseInt(params.get('id')));
+        if (offer) {
+          document.querySelector('[name=id]').value = offer.id;
+          document.querySelector('[name=title]').value = offer.title;
+          document.querySelector('[name=description]').value = offer.description;
+          document.querySelector('[name=user_id]').value = offer.user_id;
+        }
+      });
+
+    document.querySelector('#editForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const res = await fetch('../../backend/api.php?route=offers', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: form.id.value,
+          title: form.title.value,
+          description: form.description.value,
+          user_id: form.user_id.value
+        })
+      });
+      alert((await res.json()).success ? 'Mis à jour !' : 'Erreur');
+    });
+  </script>
+</body>
+</html>

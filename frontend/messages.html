@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Messagerie - SkillSwap</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen px-4 py-10">
+  <div class="max-w-3xl mx-auto">
+    <h1 class="text-3xl font-bold text-pink-600 text-center mb-8">💬 Envoyer un message</h1>
+
+    <form id="msgForm" class="bg-white p-6 rounded-2xl shadow space-y-4">
+      <input type="number" name="receiver_id" placeholder="ID Destinataire" required class="w-full p-3 border rounded-xl">
+      <textarea name="message" placeholder="Votre message..." required class="w-full p-3 border rounded-xl"></textarea>
+      <button type="submit" class="w-full py-3 bg-pink-500 text-white font-semibold rounded-xl hover:bg-pink-600">Envoyer</button>
+    </form>
+
+    <h2 class="text-xl font-semibold mt-10 mb-4 text-pink-600">📥 Messages reçus</h2>
+    <div id="messages" class="space-y-4"></div>
+
+    <div class="text-center mt-10">
+      <a href="index.html" class="inline-block bg-pink-500 text-white px-6 py-3 rounded-xl shadow hover:bg-pink-600 transition">⬅ Retour à l'accueil</a>
+    </div>
+  </div>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user) {
+      alert("Vous devez être connecté !");
+      window.location.href = "login.html";
+    }
+
+    document.querySelector('#msgForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const res = await fetch('http://localhost:8000/api.php?route=messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sender_id: user.id,
+          receiver_id: form.receiver_id.value,
+          message: form.message.value
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert("Message envoyé !");
+      } else {
+        alert(`Erreur lors de l'envoi : ${data.error || 'Une erreur inconnue est survenue.'}`);
+      }
+      form.reset();
+      loadMessages();
+    });
+
+    async function loadMessages() {
+      const res = await fetch(`http://localhost:8000/api.php?route=messages&receiver_id=${user.id}`);
+      const messages = await res.json();
+      const container = document.getElementById('messages');
+      if (!messages.length) {
+        container.innerHTML = '<p class="text-gray-500">Aucun message reçu.</p>';
+        return;
+      }
+      container.innerHTML = messages.map(m => `
+        <div class="bg-white p-4 rounded-xl shadow border">
+          <p class="text-sm text-gray-700"><strong>De ${m.sender_id}</strong> : ${m.message}</p>
+          <p class="text-xs text-gray-400 mt-1">${new Date(m.created_at).toLocaleString()}</p>
+        </div>
+      `).join('');
+    }
+
+    loadMessages();
+  </script>
+</body>
+</html>
