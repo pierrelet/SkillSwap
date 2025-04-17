@@ -12,8 +12,6 @@ Bienvenue sur **SkillSwap**, une plateforme web simple et rapide pour publier, r
 - 🔍 Recherche dynamique d'offres
 - 💬 Messagerie entre utilisateurs
 - ⭐ Notation des membres
-- 🛠 Interface admin pour modérer les offres
-- 📱 Interface 100% responsive avec Tailwind CSS
 - 🔐 Session persistante via `localStorage`
 
 ---
