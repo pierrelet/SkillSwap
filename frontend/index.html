@@ -6,6 +6,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-white text-gray-800">
+
   <!-- Header -->
   <header class="bg-indigo-600 text-white shadow">
     <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -13,7 +14,7 @@
       <nav class="space-x-4">
         <a href="register.html" class="hover:underline">Inscription</a>
         <a href="login.html" class="hover:underline">Connexion</a>
-        <a href="#features" class="hover:underline">Fonctionnalités</a>
+        <a href="search.html" class="hover:underline">Recherche</a>
         <button onclick="logout()" class="bg-white text-indigo-600 px-4 py-1 rounded-lg hover:bg-indigo-100">Se déconnecter</button>
       </nav>
     </div>
@@ -25,6 +26,20 @@
       <h2 class="text-4xl font-extrabold mb-4">Échange tes compétences, développe ton réseau ✨</h2>
       <p class="text-lg text-gray-600 mb-8">SkillSwap te permet de publier, chercher et échanger des compétences entre particuliers et professionnels.</p>
       <a href="register.html" class="bg-indigo-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-indigo-700 transition">Commencer maintenant</a>
+    </div>
+  </section>
+
+  <!-- Navigation vers les autres pages -->
+  <section class="py-16 bg-white border-t">
+    <div class="max-w-5xl mx-auto text-center px-4">
+      <h3 class="text-2xl font-bold mb-8 text-gray-800">Naviguer dans le site</h3>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 text-sm">
+        <a href="post_offer.html" class="block bg-yellow-500 text-white py-4 rounded-xl hover:bg-yellow-600 transition">➕ Créer une offre</a>
+        <a href="dashboard.html" class="block bg-indigo-500 text-white py-4 rounded-xl hover:bg-indigo-600 transition">📄 Voir les offres</a>
+        <a href="messages.html" class="block bg-pink-500 text-white py-4 rounded-xl hover:bg-pink-600 transition">💬 Messagerie</a>
+        <a href="ratings.html" class="block bg-amber-500 text-white py-4 rounded-xl hover:bg-amber-600 transition">⭐ Notation</a>
+        <a href="profile.html" class="block bg-gray-800 text-white py-4 rounded-xl hover:bg-gray-900 transition">👤 Profil</a>
+      </div>
     </div>
   </section>
 
