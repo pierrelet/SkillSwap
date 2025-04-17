@@ -2,50 +2,72 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>SkillSwap - Accueil</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      background: #f8f9fa;
-      padding: 2em;
-      text-align: center;
-    }
-    h1 {
-      color: #333;
-    }
-    ul {
-      list-style: none;
-      padding: 0;
-    }
-    li {
-      margin: 1em 0;
-    }
-    a {
-      text-decoration: none;
-      color: white;
-      background: #007bff;
-      padding: 0.7em 1.5em;
-      border-radius: 8px;
-      display: inline-block;
-    }
-    a:hover {
-      background: #0056b3;
-    }
-  </style>
+  <title>Accueil - SkillSwap</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <h1>Bienvenue sur SkillSwap 🎓</h1>
-  <p>Choisis une page à visiter :</p>
-  <ul>
-    <li><a href="register.html">Inscription</a></li>
-    <li><a href="login.html">Connexion</a></li>
-    <li><a href="post_offer.html">Créer une offre</a></li>
-    <li><a href="dashboard.html">Voir les offres</a></li>
-    <li><a href="search.html">Recherche</a></li>
-    <li><a href="messages.html">Messagerie</a></li>
-    <li><a href="ratings.html">Donner une note</a></li>
-    <li><a href="profile.html">Voir mon profil</a></li>
-    <li><a href="admin.html">Modération (Admin)</a></li>
-  </ul>
+<body class="bg-white text-gray-800">
+  <!-- Header -->
+  <header class="bg-indigo-600 text-white shadow">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <h1 class="text-2xl font-bold">🎓 SkillSwap</h1>
+      <nav class="space-x-4">
+        <a href="register.html" class="hover:underline">Inscription</a>
+        <a href="login.html" class="hover:underline">Connexion</a>
+        <a href="#features" class="hover:underline">Fonctionnalités</a>
+        <button onclick="logout()" class="bg-white text-indigo-600 px-4 py-1 rounded-lg hover:bg-indigo-100">Se déconnecter</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero section -->
+  <section class="text-center py-20 bg-gray-50">
+    <div class="max-w-3xl mx-auto px-4">
+      <h2 class="text-4xl font-extrabold mb-4">Échange tes compétences, développe ton réseau ✨</h2>
+      <p class="text-lg text-gray-600 mb-8">SkillSwap te permet de publier, chercher et échanger des compétences entre particuliers et professionnels.</p>
+      <a href="register.html" class="bg-indigo-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-indigo-700 transition">Commencer maintenant</a>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="py-16 bg-white">
+    <div class="max-w-6xl mx-auto px-6">
+      <h3 class="text-2xl font-bold text-center text-gray-800 mb-12">Fonctionnalités principales</h3>
+      <div class="grid md:grid-cols-3 gap-10">
+        <div class="p-6 border rounded-2xl shadow hover:shadow-md">
+          <h4 class="text-lg font-semibold mb-2">🔐 Authentification</h4>
+          <p class="text-sm text-gray-600">Inscription, connexion et sécurité assurée via `localStorage`.</p>
+        </div>
+        <div class="p-6 border rounded-2xl shadow hover:shadow-md">
+          <h4 class="text-lg font-semibold mb-2">📝 Création d'offres</h4>
+          <p class="text-sm text-gray-600">Publie les compétences que tu proposes ou recherches facilement.</p>
+        </div>
+        <div class="p-6 border rounded-2xl shadow hover:shadow-md">
+          <h4 class="text-lg font-semibold mb-2">⭐ Notation et avis</h4>
+          <p class="text-sm text-gray-600">Note les utilisateurs et laisse des commentaires d'expérience.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to action -->
+  <section class="text-center py-16 bg-indigo-50">
+    <div class="max-w-xl mx-auto">
+      <h3 class="text-2xl font-bold text-gray-800 mb-4">Rejoins la communauté SkillSwap dès maintenant !</h3>
+      <a href="register.html" class="bg-indigo-600 text-white px-6 py-3 rounded-xl hover:bg-indigo-700 transition">Créer un compte</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-100 text-center py-6 text-sm text-gray-500">
+    &copy; 2025 SkillSwap. Projet étudiant open-source.
+  </footer>
+
+  <script>
+    function logout() {
+      localStorage.removeItem('user');
+      alert('Déconnecté !');
+      window.location.href = 'login.html';
+    }
+  </script>
 </body>
 </html>

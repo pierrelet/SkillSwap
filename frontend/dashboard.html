@@ -19,17 +19,37 @@
       const res = await fetch('http://localhost:8000/api.php?route=offers');
       const offers = await res.json();
       const container = document.getElementById('offers');
-      if (!offers.length) {
-        container.innerHTML = '<p class="text-center text-gray-500 col-span-full">Aucune offre disponible pour le moment.</p>';
-        return;
-      }
-      container.innerHTML = offers.map(o => `
-        <div class="bg-white p-5 rounded-2xl shadow-md hover:shadow-lg transition">
-          <h3 class="text-xl font-semibold text-indigo-700 mb-2">${o.title}</h3>
-          <p class="text-gray-700 mb-4">${o.description}</p>
-          <p class="text-sm text-gray-500">Par : ${o.email}</p>
-        </div>
-      `).join('');
+
+      container.innerHTML = offers.map(o => {
+        const notes = o.ratings ? JSON.parse(o.ratings) : [];
+        const average = notes.length
+          ? (notes.reduce((sum, n) => sum + n.rating, 0) / notes.length).toFixed(1)
+          : null;
+
+        const commentsHTML = notes.length
+          ? notes.map(n => `
+              <div class="border-t pt-2 mt-2">
+                <p class="text-sm text-gray-700">⭐ ${n.rating} - ${n.comment || 'Sans commentaire'}</p>
+                <p class="text-xs text-gray-400">${new Date(n.created_at).toLocaleString()}</p>
+              </div>
+            `).join('')
+          : '<p class="text-sm text-gray-400 italic">Aucune note pour l’instant.</p>';
+
+        return `
+          <div class="bg-white p-5 rounded-2xl shadow-md hover:shadow-lg transition">
+            <h3 class="text-xl font-semibold text-indigo-700 mb-2">${o.title}</h3>
+            <p class="text-gray-700 mb-4">${o.description}</p>
+            <p class="text-sm text-gray-500">Par : ${o.email}</p>
+            <p class="text-sm text-yellow-600 font-medium mt-2">
+              ⭐ Note moyenne : ${average ?? 'Pas encore noté'}
+            </p>
+            <div class="mt-3 bg-gray-50 p-3 rounded-xl border">
+              <h4 class="text-sm font-semibold text-gray-600 mb-1">Avis :</h4>
+              ${commentsHTML}
+            </div>
+          </div>
+        `;
+      }).join('');
     }
 
     loadOffers();
